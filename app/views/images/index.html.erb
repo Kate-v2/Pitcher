@@ -1,0 +1,7 @@
+<h1>Click a button to like or dislike a dish</h1>
+
+<% if @image_facade.next_image %>
+  <%= image_tag @image_facade.next_image %>
+<% else %>
+  <p>You've run out of suggestions. Checkout your <%= link_to "matches", matches_path %> to find a restaurant.
+<% end %>
