@@ -1,7 +1,23 @@
 <h1>Click a button to like or dislike a dish</h1>
 
-<% if @image_facade.next_image %>
-  <%= image_tag @image_facade.next_image %>
+<% @image_facade.one_restuarant %>
+<% businesses = @image_facade.businesses %>
+<% if !businesses.empty? %>
+  <% businesses.each do |r| %>
+    <% photo = r.use_a_photo %>
+    <%= image_tag photo %>
+    <span>
+      <span><%= link_to "Like",            like_restaurant_path(   like: 'true',   restaurant: r.id) %></span>
+      <span><%= link_to "Dislike",         dislike_restaurant_path(like: 'false',  restaurant: r.id) %></span>
+      <span><%= link_to "Never See Again", reject_photo_path(      like: 'reject', restaurant: r.id, photo: photo) %></span>
+    </span>
+  <% end %>
 <% else %>
-  <p>You've run out of suggestions. Checkout your <%= link_to "matches", matches_path %> to find a restaurant.
+  <%#
+    - Lets add a link to call for more, with an offset of +20
+    - Let's keep track of how many times they're requested more.
+
+   %>
+  Sorry, no images to display. You may have run out of restaurants in your area.
+  <%#  TODO - we should be able to grab and additional 20 if the use goes through all 20 %>
 <% end %>

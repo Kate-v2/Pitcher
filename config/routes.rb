@@ -8,5 +8,11 @@ Rails.application.routes.draw do
   resources :images,   only: [:index]
   resources :matches,  only: [:index]
 
+  post '/visitors', to: 'visitors#create', as: :new_visitor
+  # resources :visitors, only: [:index]
+
+  put '/images', to: 'images#update', as: :like_restaurant
+  put '/images', to: 'images#update', as: :dislike_restaurant
+  put '/images', to: 'images#update', as: :reject_photo
 
 end

@@ -1,7 +1,7 @@
 
 class YelpService
 
-  def initiailize(filter)
+  def initialize(filter)
     @filter   = filter
     @base_url = 'https://api.yelp.com/v3/'
     @target   = @filter[:target]
@@ -11,7 +11,7 @@ class YelpService
   end
 
   def yelp_request
-    get_json
+    get_json ( pick_endpoint )
   end
 
 
@@ -24,22 +24,18 @@ class YelpService
   end
 
   def location
-    @location = @filter[:user_location]
-    @radius   = @filter[:radius] || 40000  # radius in meters --> The max value is 40000 meters (about 25 miles).
+    return nil if !local = @filter[:local]
+    @location = local[:location]
+    @radius   = local[:radius] || 40000  # radius in meters --> The max value is 40000 meters (about 25 miles).
   end
 
   def user_preferences
     @open_now = @filter[:open_now]
   end
 
-  # def get_json(url)
-  #   response = public_connection.get(url)
-  #   JSON.parse(response.body, symbolize_names: true)
-  # end
-
-  def get_json
-    response = public_connection.get( pick_endpoint )
-    JSON.parse(response.body, symbolize_names: true)
+  def get_json(url)
+    response = public_connection.get( url )
+    json = JSON.parse(response.body, symbolize_names: true)
   end
 
   def pick_endpoint
@@ -73,12 +69,12 @@ class YelpService
   end
 
   def business_id
-    @filter[:business_id]
+    @filter[:business]
   end
 
   def public_connection
     Faraday.new(url: @base_url) do |f|
-      f.headers["Authorization"] = "#{ENV['yelp_public_token']}"
+      f.headers['Authorization'] = "Bearer #{ENV['yelp_public_token']}"
       f.adapter Faraday.default_adapter
     end
   end

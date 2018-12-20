@@ -1,3 +1,28 @@
 <h1>Welcome</h1>
 
-<p><%= link_to "Get Started", images_path %></p>
+<p>< %= link_to "Login", login_path %></p>
+
+<p>or quick start with the fields below:</p>
+
+
+<%= form_with url: new_visitor_path do |f| %>
+  <p>
+    <%= f.label :location %>
+    <%= f.text_field :location %>
+    <br>
+    <span>
+      You may enter a city, state, zipcode, or
+      a full address (formatted: street, city, state zip)
+    </span>
+  </p>
+  <p>
+    <%= f.label :radius %>
+    <%= f.text_field :radius %>
+    <br>
+    <span>
+      (in meters, 40,000 is 25 miles)
+    </span>
+    <%# TODO -  we'll want to be able to handle commas entered %>
+  </p>
+  <%= f.submit :submit %>
+<% end %>
