@@ -1,0 +1,9 @@
+language: ruby
+rvm:
+- 2.4.1
+- jruby
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: ENV['travis_ci_token']
